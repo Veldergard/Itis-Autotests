@@ -1,0 +1,15 @@
+[versions]
+selenide = "7.7.0"
+junitJupiter = "5.11.4"
+slf4j = "2.0.16"
+kotlin = "2.1.0"
+
+[libraries]
+
+selenide = { group = "com.codeborne", name = "selenide", version.ref = "selenide" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+slf4j = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
