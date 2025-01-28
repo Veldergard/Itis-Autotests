@@ -3,6 +3,7 @@ selenide = "7.7.0"
 junitJupiter = "5.11.4"
 slf4j = "2.0.16"
 kotlin = "2.1.0"
+gatling = "3.13.1"
 
 [libraries]
 
@@ -11,5 +12,15 @@ junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.r
 slf4j = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 
+gatling-core-java = { group = "io.gatling", name = "gatling-core-java", version.ref = "gatling" }
+gatling-http-java = { group = "io.gatling", name = "gatling-http-java", version.ref = "gatling" }
+gatling-charts = { group = "io.gatling.highcharts", name = "gatling-charts-highcharts", version.ref = "gatling" }
+
+jackson-dataformat-yaml = { group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-yaml" }
+jackson-module-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin" }
+jackson-datatype-jsr310 = { group = "com.fasterxml.jackson.datatype", name = "jackson-datatype-jsr310" }
+
+
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+gatling = { id = "io.gatling.gradle", version.ref = "gatling" }
