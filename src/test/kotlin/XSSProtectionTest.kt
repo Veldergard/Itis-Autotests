@@ -1,6 +1,5 @@
 import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.Selenide
-import com.codeborne.selenide.Selenide.`$`
 import com.codeborne.selenide.Selenide.element
 import com.codeborne.selenide.WebDriverRunner
 import org.junit.jupiter.api.AfterEach
@@ -17,7 +16,8 @@ class XSSProtectionTest {
     companion object {
         const val UPLOAD_URL: String =
             "https://google-gruyere.appspot.com/526707908645020830517766443295239949706/upload.gtl"
-        const val FILE_NAME: String = "xss_test.html"
+        const val FILE_NAME: String = "xss_test"
+        const val FILE_EXT: String = ".html"
     }
 
     private var tempFile: Path? = null
@@ -34,20 +34,12 @@ class XSSProtectionTest {
             "https://google-gruyere.appspot.com/526707908645020830517766443295239949706/<script>alert(document.cookie);</script>"
 
         Selenide.open(maliciousUrl)
-
-        try {
-            val alert = WebDriverRunner.getWebDriver().switchTo().alert()
-            val alertText = alert.text
-            alert.accept()
-            fail("XSS vulnerability detected! Alert text: $alertText")
-        } catch (e: NoAlertPresentException) {
-            println("No alert detected. XSS vulnerability is not present.")
-        }
+        checkAlert()
     }
 
     @Test
     fun testXSSInFile() {
-        tempFile = Files.createTempFile("xss_test", ".html")
+        tempFile = Files.createTempFile(FILE_NAME, FILE_EXT)
         tempFile?.let {
             Files.write(it, "<script>alert(document.cookie);</script>".toByteArray())
             Selenide.open(UPLOAD_URL)
@@ -61,15 +53,8 @@ class XSSProtectionTest {
                 Selenide.open(uploadedFileUrl)
 
                 // Проверяем, появилось ли alert-окно
-                try {
-                    val alert = WebDriverRunner.getWebDriver().switchTo().alert()
-                    val alertText = alert.text
-                    alert.accept()
-                    fail("XSS vulnerability detected! Alert text: $alertText")
-                } catch (e: NoAlertPresentException) {
-                    println("No alert detected. XSS vulnerability is not present.")
-                }
-            } ?: fail("null")
+                checkAlert()
+            }
         }
     }
 
@@ -88,6 +73,16 @@ class XSSProtectionTest {
             throw RuntimeException("URL загруженного файла не найден на странице.")
         }
     }
+
+    private fun checkAlert() =
+        try {
+            val alert = WebDriverRunner.getWebDriver().switchTo().alert()
+            val alertText = alert.text
+            alert.accept()
+            fail("XSS vulnerability detected! Alert text: $alertText")
+        } catch (e: NoAlertPresentException) {
+            println("No alert detected. XSS vulnerability is not present.")
+        }
 
     @AfterEach
     fun tearDown() {
