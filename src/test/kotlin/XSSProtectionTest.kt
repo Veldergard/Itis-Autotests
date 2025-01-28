@@ -14,10 +14,10 @@ import kotlin.test.junit5.JUnit5Asserter.fail
 class XSSProtectionTest {
 
     companion object {
-        const val UPLOAD_URL: String =
-            "https://google-gruyere.appspot.com/526707908645020830517766443295239949706/upload.gtl"
-        const val FILE_NAME: String = "xss_test"
-        const val FILE_EXT: String = ".html"
+        const val BASE_URL = "https://google-gruyere.appspot.com/526707908645020830517766443295239949706"
+        const val UPLOAD_URL = "$BASE_URL/upload.gtl"
+        const val FILE_NAME = "xss_test"
+        const val FILE_EXT = ".html"
     }
 
     private var tempFile: Path? = null
@@ -30,8 +30,7 @@ class XSSProtectionTest {
 
     @Test
     fun testXSSInUrl() {
-        val maliciousUrl =
-            "https://google-gruyere.appspot.com/526707908645020830517766443295239949706/<script>alert(document.cookie);</script>"
+        val maliciousUrl = "$BASE_URL/<script>alert(document.cookie);</script>"
 
         Selenide.open(maliciousUrl)
         checkAlert()
